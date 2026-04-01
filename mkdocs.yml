@@ -1,0 +1,175 @@
+# ==================== ОСНОВНАЯ ИНФОРМАЦИЯ ====================
+site_name: Андрей Нетребин | Data Engineer Portfolio
+site_description: >
+  Портфолио Data Engineer: проекты по lakehouse, ETL, MLOps, 1С-аналитике.
+  Python, ClickHouse, Iceberg, Kafka, FastAPI, Airflow.
+site_url: https://andreynetrebin.github.io/
+site_author: Andrey Netrebin
+
+# ==================== РЕПОЗИТОРИЙ ====================
+repo_name: andreynetrebin/portfolio
+repo_url: https://github.com/andreynetrebin/portfolio
+edit_uri: edit/main/docs/
+
+# ==================== ТЕМА MATERIAL ====================
+theme:
+  name: material
+  language: ru
+  font:
+    text: Roboto
+    code: JetBrains Mono
+  favicon: assets/favicon.png
+  logo: assets/logo.svg
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Переключить на тёмную тему
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Переключить на светлую тему
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - navigation.top
+    - toc.follow
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.tooltips
+    - footer.prev_next
+  custom_dir: docs/overrides
+
+# ==================== НАВИГАЦИЯ ====================
+nav:
+  - 🏠 Главная: index.md
+  - 👤 Обо мне: about.md
+  - 🛠️ Навыки: skills.md
+  - 📦 Проекты:
+    - projects/index.md
+    - 📊 1C TJ Logs Analyzer: projects/1c-tj-logs/index.md
+    - 🧊 Lakehouse Local: projects/lakehouse-local/index.md
+    - 🔍 1C Deadlock Analysis: projects/1c-deadlock-analysis/index.md
+    - ⚡ Kafka → ClickHouse: projects/kafka-clickhouse-pipeline/index.md
+    - 📈 Business Analytics: projects/business-analytics-demo/index.md
+    - 🩺 Observability: projects/observability/index.md
+    - 🤖 AI Knowledge Base: projects/ai-knowledge-base/index.md
+    - 🔄 DataOps Pipeline: projects/dataops-pipeline/index.md
+  - 📬 Контакты: contact.md
+
+# ==================== ПЛАГИНЫ ====================
+plugins:
+  - search:
+      lang:
+        - ru
+        - en
+  - glightbox:
+      touchNavigation: true
+      loop: false
+      effect: zoom
+      zoomable: true
+  - mermaid2:
+      version: 10.6.1
+      arguments:
+        theme: dark
+        startOnLoad: true
+  - git-revision-date-localized:
+      type: datetime
+      timezone: Europe/Moscow
+      locale: ru
+      fallback_to_build_date: true
+      enable_creation_date: true
+  - minify:
+      minify_html: true
+      minify_js: true
+      minify_css: true
+      cache_safe: true
+
+# ==================== MARKDOWN РАСШИРЕНИЯ ====================
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+      linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      base_path:
+        - docs
+        - docs/projects
+      check_paths: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+        - name: plantuml
+          class: plantuml
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+# ==================== ДОПОЛНИТЕЛЬНЫЕ НАСТРОЙКИ ====================
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/andreynetrebin
+      name: GitHub
+    - icon: fontawesome/brands/telegram
+      link: https://t.me/andreynetrebin
+      name: Telegram
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/in/andreynetrebin
+      name: LinkedIn
+    - icon: fontawesome/solid/envelope
+      link: mailto:your.email@example.com
+      name: Email
+  generator: false
+  site_meta:
+    keywords: "Data Engineer, портфолио, ClickHouse, Kafka, Iceberg, ETL, MLOps, Python, 1С"
+    author: "Andrey Netrebin"
+    robots: "index, follow"
+
+# ==================== CSS И JS ====================
+extra_css:
+  - assets/css/extra.css
+
+extra_javascript:
+  - assets/js/mermaid-init.js
+
+# ==================== ВАЛИДАЦИЯ ====================
+validation:
+  links:
+    anchors: warn
+    absolute_links: warn
+    unrecognized_links: warn
+
+# ==================== НАСТРОЙКИ СБОРКИ ====================
+strict: false
+watch:
+  - docs/
+  - mkdocs.yml
+  - assets/

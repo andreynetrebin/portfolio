@@ -1,0 +1,86 @@
+name: 🔄 Sync Project Documentation
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      project:
+        description: 'Проект для синхронизации'
+        required: false
+        type: string
+      force:
+        description: 'Принудительная синхронизация'
+        required: false
+        type: boolean
+        default: false
+  repository_dispatch:
+    types: [docs_updated]
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: 📦 Install dependencies
+        run: |
+          pip install -r requirements-sync.txt
+          pip install -r requirements.txt
+
+      - name: 🔄 Run sync script
+        run: |
+          PROJECT_ARG=""
+          if [ -n "${{ github.event.inputs.project }}" ]; then
+            PROJECT_ARG="--project ${{ github.event.inputs.project }}"
+          elif [ "${{ github.event.action }}" = "repository_dispatch" ]; then
+            PROJECT_ARG="--project ${{ github.event.client_payload.project }}"
+          else
+            PROJECT_ARG="--all"
+          fi
+          
+          FORCE_ARG=""
+          if [ "${{ github.event.inputs.force }}" = "true" ]; then
+            FORCE_ARG="--force"
+          fi
+          
+          python scripts/sync-projects.py $PROJECT_ARG $FORCE_ARG
+
+      - name: 🎯 Commit & push
+        id: commit_changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          if [ -n "$(git status --porcelain)" ]; then
+            git add docs/projects/ docs/assets/projects/
+            git commit -m "🔄 Auto-sync docs from projects [skip ci]
+            
+            Synced at: $(date -u +'%Y-%m-%dT%H:%M:%SZ')
+            Trigger: ${{ github.event_name }}"
+            git push
+            echo "changes_made=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes_made=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 🚀 Trigger deploy
+        if: steps.commit_changes.outputs.changes_made == 'true'
+        run: |
+          gh workflow run deploy.yml
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
