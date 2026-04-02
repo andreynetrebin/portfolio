@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "1c_tj_logs": {
+      "last_sync": "2026-04-01T14:45:18.729869Z",
+      "source_commit": "da8f912",
+      "files_count": 1,
+      "files": {
+        "index.md": "d3d39532d385d70a7e35063093e8fbb76e024e07c80f84092d59265cccb07a8e",
+        "architecture.md": "6e4b1d08c1b743b8e4b39bec899a2206a1f314c77136d20a276b11d71e698ead"
+      }
+    }
+  },
+  "last_sync": "2026-04-01T14:52:32.861902Z"
+}
